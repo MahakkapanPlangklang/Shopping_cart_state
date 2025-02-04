@@ -67,7 +67,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("🖥️ IT Gadget Store"),
+        title: Text("🖥️ IT Gadget Store (${totalItems} ชิ้น)"), 
         backgroundColor: Colors.blueAccent,
       ),
       body: Column(
@@ -146,6 +146,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
               borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
             ),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   "รวมสินค้า: $totalItems ชิ้น",
@@ -155,6 +156,24 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                   "ราคารวม: ฿${formatPrice(totalPrice.toInt())}",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.yellowAccent),
                 ),
+                SizedBox(height: 10),
+
+                if (totalItems == 0)
+                  Text(
+                    "ไม่มีสินค้าในตะกร้า",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.red),
+                  )
+                else
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: _products.where((item) => item['quantity'] > 0).map((item) {
+                      return Text(
+                        "${item['name']} - ${item['quantity']} ชิ้น",
+                        style: TextStyle(fontSize: 16, color: Colors.white),
+                      );
+                    }).toList(),
+                  ),
+
                 SizedBox(height: 10),
                 ElevatedButton.icon(
                   onPressed: _resetCart,
